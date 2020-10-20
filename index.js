@@ -1,5 +1,6 @@
 const fs = require('fs')
 const http = require('http')
+const slugify = require('slugify')
 const url = require('url')
 
 const replaceTemplate = require('./modules/replaceTemplate')
@@ -55,7 +56,7 @@ const server = http.createServer((req, res) => {
     // Product Page
   } else if (pathname === '/product') {
     res.writeHead(200, { 'Content-type': 'text/html'})
-    const product = productData[query.id]
+    const product = productData.find(data => slugify(data.productName, { lower: true }) === query.id)
     const output = replaceTemplate(productTemp, product)
 
     res.end(output)
